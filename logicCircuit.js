@@ -1,76 +1,77 @@
 document.addEventListener("DOMContentLoaded", function() {
   var canvas = document.getElementById('logicCanvas');
-  var ctx = canvas.getContext('2d');
+  if (canvas.getContext) {
+    var ctx = canvas.getContext('2d');
 
-  // Function to draw AND gate
-  function drawANDGate(x, y) {
+    // Helper function to draw a line
+    function drawLine(startX, startY, endX, endY) {
+      ctx.moveTo(startX, startY);
+      ctx.lineTo(endX, endY);
+      ctx.stroke();
+    }
+
+    // Helper function to draw an inverter circle (for NOT operation)
+    function drawInverter(x, y) {
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Draw NOR gate for (P ↓ Q)
     ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x + 50, y);
-    ctx.lineTo(x + 50, y + 100);
-    ctx.lineTo(x, y + 100);
-    ctx.closePath();
+    ctx.moveTo(50, 50); // Start at top left
+    ctx.lineTo(100, 50); // Draw top side
+    ctx.lineTo(100, 100); // Draw right side
+    ctx.lineTo(50, 100); // Draw bottom side
+    ctx.closePath(); // Close the path to draw left side
     ctx.stroke();
-    // Arc for AND gate
+    drawInverter(100, 75); // Inverter circle at the output of the NOR gate
+
+    // Draw AND gate for (¬Q ∧ R)
     ctx.beginPath();
-    ctx.arc(x + 50, y + 50, 50, 1.5 * Math.PI, 0.5 * Math.PI, false);
+    ctx.moveTo(50, 150); // Start at top left
+    ctx.lineTo(100, 150); // Draw top side
+    ctx.lineTo(100, 200); // Draw right side
+    ctx.lineTo(50, 200); // Draw bottom side
+    ctx.closePath(); // Close the path to draw left side
     ctx.stroke();
+
+    // Draw OR gate for the whole expression
+    ctx.beginPath();
+    ctx.moveTo(150, 100); // Start at top left
+    ctx.lineTo(200, 100); // Draw top side
+    ctx.lineTo(200, 200); // Draw right side
+    ctx.lineTo(150, 200); // Draw bottom side
+    ctx.closePath(); // Close the path to draw left side
+    ctx.stroke();
+
+    // Draw NOT gate for the negation of the whole expression
+    ctx.beginPath();
+    ctx.moveTo(250, 150); // Start at top
+    ctx.lineTo(300, 150); // Draw right side
+    ctx.lineTo(250, 200); // Draw left side
+    ctx.closePath(); // Close the path
+    ctx.stroke();
+    drawInverter(300, 175); // Inverter circle at the output of the NOT gate
+
+    // Draw lines connecting the gates
+    drawLine(100, 75, 150, 75); // Line from NOR to OR
+    drawLine(100, 175, 150, 175); // Line from AND to OR
+    drawLine(200, 150, 250, 150); // Line from OR to NOT
+
+    // Draw input lines for P, Q, and R
+    drawLine(0, 50, 50, 50); // Input line for P
+    drawLine(0, 75, 50, 75); // Input line for Q
+    drawLine(0, 175, 50, 175); // Input line for R
+
+    // Output line from the NOT gate
+    drawLine(300, 175, 350, 175); // Output line
+
+    // Label the inputs and output
+    ctx.fillText('P', 10, 55);
+    ctx.fillText('Q', 10, 80);
+    ctx.fillText('¬Q', 10, 180);
+    ctx.fillText('R', 10, 205);
+    ctx.fillText('Output', 355, 180);
   }
-
-  // Function to draw OR gate
-  function drawORGate(x, y) {
-    ctx.beginPath();
-    // OR gate complex shape can be drawn here, for simplicity, we use rectangles
-    ctx.strokeRect(x, y, 50, 100);
-    ctx.stroke();
-  }
-
-  // Function to draw NOT gate (Inverter)
-  function drawNOTGate(x, y) {
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x + 50, y + 50);
-    ctx.lineTo(x, y + 100);
-    ctx.closePath();
-    ctx.stroke();
-    // Circle for NOT gate
-    ctx.beginPath();
-    ctx.arc(x + 60, y + 50, 10, 0, 2 * Math.PI, false);
-    ctx.stroke();
-  }
-
-  // Draw the gates
-  drawANDGate(100, 50);
-  drawORGate(200, 150);
-  drawNOTGate(300, 250);
-
-  // Draw connections
-  // Using moveTo and lineTo to draw lines between the gates
-  ctx.beginPath();
-  ctx.moveTo(150, 100); // End of AND gate
-  ctx.lineTo(200, 175); // Start of OR gate
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.moveTo(250, 175); // End of OR gate
-  ctx.lineTo(300, 275); // Start of NOT gate
-  ctx.stroke();
-
-  // Draw input/output lines
-  ctx.beginPath();
-  ctx.moveTo(50, 75); // Input line for AND gate
-  ctx.lineTo(100, 75); // Starting point on AND gate
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.moveTo(360, 275); // Output line from NOT gate
-  ctx.lineTo(400, 275); // End point
-  ctx.stroke();
-
-  // Add text labels
-  ctx.font = "16px Arial";
-  ctx.fillText("P", 30, 80);
-  ctx.fillText("Q", 30, 105);
-  ctx.fillText("R", 30, 130);
-  ctx.fillText("Output", 410, 280);
 });
