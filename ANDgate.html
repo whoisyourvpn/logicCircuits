@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AND Gate</title>
+    <style>
+        body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        canvas { border: 1px solid #000; }
+    </style>
+</head>
+<body>
+    <canvas id="andCanvas" width="200" height="100"></canvas>
+    <script>
+        const canvas = document.getElementById('andCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Draw the body of the AND gate
+        ctx.beginPath();
+        ctx.moveTo(50, 20); // start top left
+        ctx.lineTo(80, 20); // line to start of the curve
+        ctx.quadraticCurveTo(100, 20, 100, 50); // curve to right
+        ctx.quadraticCurveTo(100, 80, 80, 80); // curve to bottom
+        ctx.lineTo(50, 80); // line to bottom left
+        ctx.closePath();
+        ctx.stroke();
+
+        // Draw the input lines
+        ctx.beginPath();
+        ctx.moveTo(20, 35); // input P
+        ctx.lineTo(50, 35); // line to body of the AND gate
+        ctx.moveTo(20, 65); // input Q
+        ctx.lineTo(50, 65); // line to body of the AND gate
+        ctx.stroke();
+
+        // Label the inputs P and Q
+        ctx.font = '16px Arial';
+        ctx.fillText('P', 10, 40);
+        ctx.fillText('Q', 10, 70);
+    </script>
+</body>
+</html>
